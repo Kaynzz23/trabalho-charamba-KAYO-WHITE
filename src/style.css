@@ -1,14 +1,59 @@
-/* styles.css */
+@import url('https://fonts.googleapis.com/css2?family=Lilita+One&display=swap');
+
+
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f0f0f0;
+    background-color: gray;
 }
 
+
+
 #gameCanvas {
-    border: 1px solid #000;
-    background-color: #fff;
+    display: block;
+    margin: 0 auto;
+    border: 2px solid black; /* Borda preta de 2 pixels */
+    background-color: #eee; /* Cor de fundo cinza claro */
+}
+
+#score, #title {
+    display: block;
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+    margin-top: 10px;
+    font-family: "Lilita One";
+}
+
+#cor {
+    display: block;
+    text-align: justify;
+    font-size: 40px;
+    font-weight: bold;
+    margin-top: 10px;
+    font-family: "Lilita One";
+}
+
+#restartButton {
+    display: block;
+    margin: 10px auto;
+    font-size: 16px;
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 43%;
+}
+
+#restartButton:hover {
+    background-color: #45a049;
+}
+
+#name {
+    display: block;
+    text-align: justify;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 10px;
+    font-family: "Lilita One";
 }
