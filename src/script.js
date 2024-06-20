@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         score = 0;
         fruits = [
             { x: getRandomPosition(), y: getRandomPosition(), emoji: '🍎', type: 'fruit' },
-            { x: getRandomPosition(), y: getRandomPosition(), emoji: '🍔', type: 'banana' }
+            { x: getRandomPosition(), y: getRandomPosition(), emoji: '🍌', type: 'banana' }
         ];
         scoreElement.textContent = `Score: ${score}`;
     }
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const fruit = {
             x: fruitX,
             y: fruitY,
-            emoji: isBanana ? '🍔' : getRandomFruitEmoji(),
+            emoji: isBanana ? '🍌' : getRandomFruitEmoji(),
             type: isBanana ? 'banana' : 'fruit'
         };
 
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getRandomFruitEmoji() {
-        const fruitEmojis = ['🍎', '🍊, '🍒', '🍓']; // Lista de emojis de frutas saudáveis
+        const fruitEmojis = ['🍎', '🍏', '🍒', '🍓']; // Lista de emojis de frutas saudáveis
         return fruitEmojis[Math.floor(Math.random() * fruitEmojis.length)];
     }
 
