@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
         gameOver = false;
         score = 0;
         fruits = [
-            createRandomFruit(), // Cria a primeira fruta boa
-            createRandomBanana() // Cria a primeira banana
+            { x: getRandomPosition(), y: getRandomPosition(), emoji: '🍎', type: 'fruit' },
+            { x: getRandomPosition(), y: getRandomPosition(), emoji: '🍌', type: 'banana' }
         ];
         scoreElement.textContent = `Score: ${score}`;
     }
@@ -50,36 +50,22 @@ document.addEventListener('DOMContentLoaded', () => {
         return Math.floor(Math.random() * (canvasSize / gridSize)) * gridSize;
     }
 
-    // Cria uma fruta aleatória (não-banana)
-    function createRandomFruit() {
+    function createFruit() {
         let fruitX, fruitY;
         do {
             fruitX = getRandomPosition();
             fruitY = getRandomPosition();
         } while (fruits.some(fruit => fruit.x === fruitX && fruit.y === fruitY));
-        
-        return {
-            x: fruitX,
-            y: fruitY,
-            emoji: getRandomFruitEmoji(),
-            type: 'fruit'
-        };
-    }
 
-    // Cria uma banana em uma posição aleatória
-    function createRandomBanana() {
-        let fruitX, fruitY;
-        do {
-            fruitX = getRandomPosition();
-            fruitY = getRandomPosition();
-        } while (fruits.some(fruit => fruit.x === fruitX && fruit.y === fruitY));
-        
-        return {
+        const isBanana = Math.random() < 0.25; // 25% de chance de gerar uma banana
+        const fruit = {
             x: fruitX,
             y: fruitY,
-            emoji: '🍌',
-            type: 'banana'
+            emoji: isBanana ? '🍌' : getRandomFruitEmoji(),
+            type: isBanana ? 'banana' : 'fruit'
         };
+
+        fruits.push(fruit);
     }
 
     function getRandomFruitEmoji() {
@@ -110,8 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     // Fruta saudável aumenta o tamanho da cobra
                     fruits.splice(index, 1);
-                    fruits.push(createRandomFruit()); // Adiciona uma nova fruta saudável
-                    fruits.push(createRandomBanana()); // Adiciona uma nova banana
+                    createFruit();
                     score += 10;
                     scoreElement.textContent = `Score: ${score}`;
                 }
