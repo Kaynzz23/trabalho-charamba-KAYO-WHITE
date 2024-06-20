@@ -10,24 +10,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvasSize = 400;
     const snakeColor = 'green';
 
-    let snake = [
-        { x: 200, y: 200 },
-        { x: 180, y: 200 },
-        { x: 160, y: 200 }
-    ];
+    let snake, dx, dy, changingDirection, gameOver, score, fruits;
+    let gameInterval; // Variável para armazenar o intervalo do jogo
 
-    // Frutas com suas cores
-    let fruits = [];
-
-    const maxBananas = 10; // Limite máximo de bananas
-    let dx = gridSize;
-    let dy = 0;
-    let changingDirection = false;
-    let gameOver = false;
-    let score = 0;
+    // Função para inicializar o jogo
+    function initializeGame() {
+        snake = [
+            { x: 200, y: 200 },
+            { x: 180, y: 200 },
+            { x: 160, y: 200 }
+        ];
+        dx = gridSize;
+        dy = 0;
+        changingDirection = false;
+        gameOver = false;
+        score = 0;
+        fruits = [
+            { x: getRandomPosition(), y: getRandomPosition(), emoji: '🍎', type: 'fruit' },
+            { x: getRandomPosition(), y: getRandomPosition(), emoji: '🍔', type: 'banana' }
+        ];
+        scoreElement.textContent = `Score: ${score}`;
+    }
 
     function clearCanvas() {
-        ctx.fillStyle = '#fff';
+        ctx.fillStyle = '#eee';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
@@ -44,39 +50,32 @@ document.addEventListener('DOMContentLoaded', () => {
         return Math.floor(Math.random() * (canvasSize / gridSize)) * gridSize;
     }
 
-    // Função para criar uma maçã em uma posição aleatória
-    function createApple() {
-        let appleX, appleY;
+    function createFruit() {
+        let fruitX, fruitY;
         do {
-            appleX = getRandomPosition();
-            appleY = getRandomPosition();
-        } while (fruits.some(fruit => fruit.x === appleX && fruit.y === appleY));
+            fruitX = getRandomPosition();
+            fruitY = getRandomPosition();
+        } while (fruits.some(fruit => fruit.x === fruitX && fruit.y === fruitY));
 
-        const apple = { x: appleX, y: appleY, type: 'apple', color: 'red' };
-        fruits.push(apple);
+        const isBanana = Math.random() < 0.25; // 25% de chance de gerar uma banana
+        const fruit = {
+            x: fruitX,
+            y: fruitY,
+            emoji: isBanana ? '🍔' : getRandomFruitEmoji(),
+            type: isBanana ? 'banana' : 'fruit'
+        };
+
+        fruits.push(fruit);
     }
 
-    // Função para criar uma banana em uma posição aleatória
-    function createBanana() {
-        let bananaX, bananaY;
-        do {
-            bananaX = getRandomPosition();
-            bananaY = getRandomPosition();
-        } while (fruits.some(fruit => fruit.x === bananaX && fruit.y === bananaY));
-
-        const banana = { x: bananaX, y: bananaY, type: 'banana', color: 'yellow' };
-        fruits.push(banana);
-    }
-
-    // Função para criar todas as frutas
-    function createFruits() {
-        createApple();
-        createBanana();
+    function getRandomFruitEmoji() {
+        const fruitEmojis = ['🍎', '🍊, '🍒', '🍓']; // Lista de emojis de frutas saudáveis
+        return fruitEmojis[Math.floor(Math.random() * fruitEmojis.length)];
     }
 
     function drawFruit(fruit) {
-        ctx.fillStyle = fruit.color;
-        ctx.fillRect(fruit.x, fruit.y, gridSize, gridSize);
+        ctx.font = '20px Arial';
+        ctx.fillText(fruit.emoji, fruit.x, fruit.y + gridSize);
     }
 
     function drawFruits() {
@@ -94,12 +93,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 ateFruit = true;
                 if (fruit.type === 'banana') {
                     gameOver = true; // A banana mata a cobra
-                } else if (fruit.type === 'apple') {
-                    // A maçã aumenta o tamanho da cobra
-                    fruits.splice(index, 1); // Remove a fruta comida
-                    createFruits(); // Cria uma nova fruta
-                    score += 10; // Aumenta o score
-                    scoreElement.textContent = `Score: ${score}`; // Atualiza o placar na tela
+                } else {
+                    // Fruta saudável aumenta o tamanho da cobra
+                    fruits.splice(index, 1);
+                    createFruit();
+                    score += 10;
+                    scoreElement.textContent = `Score: ${score}`;
                 }
             }
         });
@@ -156,41 +155,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function removeExcessBananas() {
-        fruits = fruits.filter(fruit => fruit.type !== 'banana');
+        const maxBananas = 10;
+        const bananaCount = fruits.filter(fruit => fruit.type === 'banana').length;
+        if (bananaCount > maxBananas) {
+            fruits = fruits.filter(fruit => fruit.type !== 'banana');
+        }
     }
 
     function restartGame() {
-        snake = [
-            { x: 200, y: 200 },
-            { x: 180, y: 200 },
-            { x: 160, y: 200 }
-        ];
-        fruits = [];
-        dx = gridSize;
-        dy = 0;
-        gameOver = false;
-        score = 0;
-        scoreElement.textContent = `Score: ${score}`; // Reinicia o placar na tela
-        createFruits();
+        clearInterval(gameInterval); // Para o loop do jogo
+        initializeGame(); // Reinicializa os parâmetros do jogo
+        gameLoop(); // Reinicia o loop do jogo
     }
 
     function gameLoop() {
-        if (gameOver || checkCollision()) return;
+        if (gameOver || checkCollision()) {
+            clearInterval(gameInterval); // Para o jogo se acabar
+            return;
+        }
 
         changingDirection = false;
         clearCanvas();
         drawFruits();
         moveSnake();
         drawSnake();
-        if (fruits.filter(fruit => fruit.type === 'banana').length > maxBananas) {
-            removeExcessBananas();
-        }
+
+        removeExcessBananas();
+
+        gameInterval = setTimeout(gameLoop, 100); // Ajusta a velocidade do jogo
     }
 
     document.addEventListener('keydown', changeDirection);
-    createFruits();
-
     restartButton.addEventListener('click', restartGame);
 
-    setInterval(gameLoop, 100);
+    initializeGame(); // Inicializa o jogo na primeira execução
+    gameLoop(); // Inicia o loop do jogo
 });
