@@ -5,7 +5,12 @@ body {
     background-color: gray;
 }
 
+.container {
+    margin: 0 auto;
+    display: table;
+    overflow: hidden;
 
+}
 
 #gameCanvas {
     display: block;
@@ -40,9 +45,8 @@ body {
     background-color: #4CAF50;
     color: white;
     border: none;
-    cursor: pointer;
     border-radius: 4px;
-    width: 43%;
+    width: 100%;
 }
 
 #restartButton:hover {
