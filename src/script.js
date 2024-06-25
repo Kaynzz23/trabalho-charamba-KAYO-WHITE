@@ -1,5 +1,3 @@
-// script.js
-
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
@@ -9,9 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const gridSize = 20; // Tamanho da grade
     const canvasSize = 400;
     const snakeColor = 'green';
+    const skullEmoji = '💀'; // Emoji de caveira
+    const boneEmoji = '🦴'; // Emoji de osso
 
     let snake, dx, dy, changingDirection, gameOver, score, fruits;
     let gameInterval; // Variável para armazenar o intervalo do jogo
+
+    // Ajuste do tamanho do canvas
+    canvas.width = canvasSize;
+    canvas.height = canvasSize;
 
     // Função para inicializar o jogo
     function initializeGame() {
@@ -25,10 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
         changingDirection = false;
         gameOver = false;
         score = 0;
-        fruits = [
-            { x: getRandomPosition(), y: getRandomPosition(), emoji: '🍎', type: 'fruit' },
-            { x: getRandomPosition(), y: getRandomPosition(), emoji: '🍌', type: 'banana' }
-        ];
+        fruits = [];
+        createFruit('fruit'); // Cria uma fruta saudável
         scoreElement.textContent = `Score: ${score}`;
     }
 
@@ -43,34 +45,57 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function drawSnake() {
-        snake.forEach(drawSnakePart);
+        if (gameOver) {
+            // Desenha uma caveira no lugar da cabeça da cobra
+            ctx.font = '20px Arial';
+            ctx.fillText(skullEmoji, snake[0].x, snake[0].y + gridSize);
+
+            // Desenha ossos no restante do corpo da cobra
+            for (let i = 1; i < snake.length; i++) {
+                ctx.fillText(boneEmoji, snake[i].x, snake[i].y + gridSize);
+            }
+        } else {
+            snake.forEach(drawSnakePart);
+        }
     }
 
     function getRandomPosition() {
         return Math.floor(Math.random() * (canvasSize / gridSize)) * gridSize;
     }
 
-    function createFruit() {
+    function createFruit(type) {
         let fruitX, fruitY;
         do {
             fruitX = getRandomPosition();
             fruitY = getRandomPosition();
         } while (fruits.some(fruit => fruit.x === fruitX && fruit.y === fruitY));
 
-        const isBanana = Math.random() < 0.25; // 25% de chance de gerar uma banana
         const fruit = {
             x: fruitX,
             y: fruitY,
-            emoji: isBanana ? '🍌' : getRandomFruitEmoji(),
-            type: isBanana ? 'banana' : 'fruit'
+            emoji: type === 'banana' ? getRandomBananaEmoji() : getRandomFruitEmoji(),
+            type: type
         };
 
         fruits.push(fruit);
+
+        // Se a fruta criada for uma fruta saudável, decide aleatoriamente quantas bananas criar (entre 1 e 2)
+        if (type === 'fruit') {
+            const numberOfBananas = Math.random() < 0.5 ? 1 : 2; // Decide aleatoriamente entre 1 ou 2 bananas
+            for (let i = 0; i < numberOfBananas; i++) {
+                createFruit('banana');
+            }
+        }
     }
 
     function getRandomFruitEmoji() {
         const fruitEmojis = ['🍎', '🍏', '🍒', '🍓']; // Lista de emojis de frutas saudáveis
         return fruitEmojis[Math.floor(Math.random() * fruitEmojis.length)];
+    }
+
+    function getRandomBananaEmoji() {
+        const bananaEmojis = ['🍌', '🍌', '🍌', '🍌', '🍌', '🍌', '🍌', '🍌', '🍌', '🍌']; // Emojis de bananas variantes
+        return bananaEmojis[Math.floor(Math.random() * bananaEmojis.length)];
     }
 
     function drawFruit(fruit) {
@@ -96,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     // Fruta saudável aumenta o tamanho da cobra
                     fruits.splice(index, 1);
-                    createFruit();
+                    createFruit('fruit'); // Cria uma nova fruta saudável
                     score += 10;
                     scoreElement.textContent = `Score: ${score}`;
                 }
@@ -116,6 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const RIGHT_KEY = 39;
         const UP_KEY = 38;
         const DOWN_KEY = 40;
+        const SPACE_KEY = 32;
 
         const keyPressed = event.keyCode;
         const goingUp = dy === -gridSize;
@@ -139,6 +165,9 @@ document.addEventListener('DOMContentLoaded', () => {
             dx = 0;
             dy = gridSize;
         }
+        if (keyPressed === SPACE_KEY) {
+            restartGame(); // Chama a função para reiniciar o jogo
+        }
     }
 
     function checkCollision() {
@@ -154,14 +183,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return hitLeftWall || hitRightWall || hitTopWall || hitBottomWall;
     }
 
-    function removeExcessBananas() {
-        const maxBananas = 10;
-        const bananaCount = fruits.filter(fruit => fruit.type === 'banana').length;
-        if (bananaCount > maxBananas) {
-            fruits = fruits.filter(fruit => fruit.type !== 'banana');
-        }
-    }
-
     function restartGame() {
         clearInterval(gameInterval); // Para o loop do jogo
         initializeGame(); // Reinicializa os parâmetros do jogo
@@ -171,6 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function gameLoop() {
         if (gameOver || checkCollision()) {
             clearInterval(gameInterval); // Para o jogo se acabar
+            drawSnake(); // Desenha a cobra uma última vez para mostrar a caveira e os ossos
             return;
         }
 
@@ -179,8 +201,6 @@ document.addEventListener('DOMContentLoaded', () => {
         drawFruits();
         moveSnake();
         drawSnake();
-
-        removeExcessBananas();
 
         gameInterval = setTimeout(gameLoop, 100); // Ajusta a velocidade do jogo
     }
