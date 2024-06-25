@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getRandomBananaEmoji() {
-        const bananaEmojis = ['🍌', '🍌', '🍌', '🍌', '🍌', '🍌', '🍌', '🍌', '🍌', '🍌']; // Emojis de bananas variantes
+        const bananaEmojis = ['🍟', '🌭', '🍔', '🍕']; // Emojis de bananas variantes
         return bananaEmojis[Math.floor(Math.random() * bananaEmojis.length)];
     }
 
