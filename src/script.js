@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const gridSize = 20; // Tamanho da grade
     const canvasSize = 400;
-    const snakeColor = 'green';
     const skullEmoji = '💀'; // Emoji de caveira
     const boneEmoji = '🦴'; // Emoji de osso
 
@@ -35,13 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function clearCanvas() {
-        ctx.fillStyle = '#eee';
+        ctx.fillStyle = '#329600';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }
-
-    function drawSnakePart(snakePart) {
-        ctx.fillStyle = snakeColor;
-        ctx.fillRect(snakePart.x, snakePart.y, gridSize, gridSize);
     }
 
     function drawSnake() {
@@ -55,7 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 ctx.fillText(boneEmoji, snake[i].x, snake[i].y + gridSize);
             }
         } else {
-            snake.forEach(drawSnakePart);
+            snake.forEach(part => {
+                ctx.fillStyle = 'darkgreen';
+                ctx.fillRect(part.x, part.y, gridSize, gridSize);
+            });
         }
     }
 
@@ -191,8 +188,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function gameLoop() {
         if (gameOver || checkCollision()) {
+            gameOver = true; // Marca o jogo como encerrado
             clearInterval(gameInterval); // Para o jogo se acabar
-            drawSnake(); // Desenha a cobra uma última vez para mostrar a caveira e os ossos
+            clearCanvas(); // Limpa o canvas para apagar a cobra
+            drawSnake(); // Desenha apenas os ossos
             return;
         }
 

@@ -16,7 +16,7 @@ body {
     display: block;
     margin: 0 auto;
     border: 2px solid black; /* Borda preta de 2 pixels */
-    background-color: #eee; /* Cor de fundo cinza claro */
+    background-color: #1c7700; /* Cor de fundo cinza claro */
 }
 
 #score, #title {
