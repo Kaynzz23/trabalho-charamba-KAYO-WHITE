@@ -2,62 +2,105 @@
 
 
 body {
-    background-color: gray;
+    background: linear-gradient(-45deg, #ff6b6b, #ff8787, #6bffb3, #6b87ff); /* Gradiente de cores */
+    background-size: 400% 400%; /* Para a animação de gradiente */
+    animation: gradientAnimation 15s ease infinite; /* Animação suave e infinita */
+    font-family: 'Lilita One', sans-serif; /* Fonte consistente com o tema */
+    color: #333; /* Cor do texto */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden; /* Oculta a barra de rolagem para evitar problemas de overflow */
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .container {
-    margin: 0 auto;
-    display: table;
-    overflow: hidden;
+    background: rgba(255, 255, 255, 0.8); /* Fundo branco semi-transparente */
+    padding: 20px;
+    border-radius: 15px; /* Bordas arredondadas */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Sombra leve */
+    text-align: center;
+}
 
+h1#title {
+    color: #fff; /* Título em branco */
+    font-size: 3em;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Sombra para destacar o texto */
+    margin-bottom: 20px; /* Espaço abaixo do título */
+}
+
+#score {
+    display: block;
+    font-size: 2.5em; /* Tamanho maior para se destacar */
+    font-weight: bold;
+    color: #fff; /* Cor branca para contraste com o fundo */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Sombra para destacar o texto */
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.6); /* Fundo preto semi-transparente */
+    border-radius: 10px; /* Bordas arredondadas */
+    border: 2px solid rgba(255, 255, 255, 0.8); /* Borda branca semi-transparente */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra leve ao redor */
+    font-family: 'Lilita One', sans-serif; /* Fonte consistente com o tema */
 }
 
 #gameCanvas {
     display: block;
-    margin: 0 auto;
-    border: 2px solid black; /* Borda preta de 2 pixels */
-    background-color: #1c7700; /* Cor de fundo cinza claro */
+    margin: 20px auto; /* Centraliza o canvas e adiciona um espaçamento acima */
+    border: 5px solid #4CAF50; /* Borda verde grossa */
+    border-radius: 15px; /* Bordas arredondadas */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Sombra para dar profundidade */
+    background: linear-gradient(135deg, #f0f4f5, #d9e2ec); /* Fundo gradiente leve */
 }
 
-#score, #title {
-    display: block;
-    text-align: center;
-    font-size: 40px;
-    font-weight: bold;
-    margin-top: 10px;
-    font-family: "Lilita One";
-}
-
-#cor {
-    display: block;
-    text-align: justify;
-    font-size: 40px;
-    font-weight: bold;
-    margin-top: 10px;
-    font-family: "Lilita One";
-}
 
 #restartButton {
     display: block;
-    margin: 10px auto;
-    font-size: 16px;
-    padding: 5px 10px;
-    background-color: #4CAF50;
+    margin: 20px auto; /* Espaçamento maior para centralizar */
+    padding: 10px 20px; /* Mais espaço interno */
+    width: 95%;
+    font-size: 18px; /* Fonte maior para melhor legibilidade */
+    font-family: 'Lilita One', sans-serif; /* Fonte divertida e em harmonia com o título */
+    background: linear-gradient(45deg, #7cff6b, #91ff87); /* Gradiente de cores vibrantes */
     color: white;
     border: none;
-    border-radius: 4px;
-    width: 100%;
+    border-radius: 25px; /* Borda arredondada */
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Sombra para profundidade */
+    transition: background 0.3s ease, transform 0.3s ease; /* Transição suave para efeitos */
+    text-transform: uppercase; /* Texto em maiúsculas */
+    letter-spacing: 2px; /* Espaçamento entre letras */
 }
 
 #restartButton:hover {
-    background-color: #45a049;
+    background: linear-gradient(45deg, #87ff87, #89ff6b); /* Gradiente invertido no hover */
+    transform: scale(1.05); /* Aumenta ligeiramente ao passar o mouse */
+}
+
+#restartButton:active {
+    transform: scale(0.98); /* Reduz ligeiramente ao clicar, simulando um efeito de pressão */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Reduz a sombra ao clicar */
 }
 
 #name {
-    display: block;
-    text-align: justify;
-    font-size: 15px;
-    font-weight: bold;
+    color: #fff; /* Texto de crédito em branco */
     margin-top: 10px;
-    font-family: "Lilita One";
+    text-align: center;
+    font-size: 2em;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Sombra leve */
 }

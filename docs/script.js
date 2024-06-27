@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const restartButton = document.getElementById('restartButton');
 
     const gridSize = 20; // Tamanho da grade
-    const canvasSize = 400;
+    const canvasSize = 420;
     const skullEmoji = '💀'; // Emoji de caveira
     const boneEmoji = '🦴'; // Emoji de osso
 
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function clearCanvas() {
-        ctx.fillStyle = '#329600';
+        ctx.fillStyle = '#e6ece1';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else {
             snake.forEach(part => {
-                ctx.fillStyle = 'darkgreen';
+                ctx.fillStyle = 'green';
                 ctx.fillRect(part.x, part.y, gridSize, gridSize);
             });
         }
@@ -131,6 +131,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function changeDirection(event) {
+        const keyPressed = event.keyCode;
+        const SPACE_KEY = 32;
+
+        if (keyPressed === SPACE_KEY) {
+            restartGame(); // Chama a função para reiniciar o jogo imediatamente
+            return; // Não checa mais direções se for espaço
+        }
+
         if (changingDirection) return;
         changingDirection = true;
 
@@ -138,9 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const RIGHT_KEY = 39;
         const UP_KEY = 38;
         const DOWN_KEY = 40;
-        const SPACE_KEY = 32;
 
-        const keyPressed = event.keyCode;
         const goingUp = dy === -gridSize;
         const goingDown = dy === gridSize;
         const goingRight = dx === gridSize;
@@ -161,9 +167,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (keyPressed === DOWN_KEY && !goingUp) {
             dx = 0;
             dy = gridSize;
-        }
-        if (keyPressed === SPACE_KEY) {
-            restartGame(); // Chama a função para reiniciar o jogo
         }
     }
 
