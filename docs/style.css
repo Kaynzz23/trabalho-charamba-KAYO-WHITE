@@ -2,18 +2,18 @@
 
 
 body {
-    background: linear-gradient(-45deg, #ff6b6b, #ff8787, #6bffb3, #6b87ff); /* Gradiente de cores */
-    background-size: 400% 400%; /* Para a animação de gradiente */
-    animation: gradientAnimation 15s ease infinite; /* Animação suave e infinita */
-    font-family: 'Lilita One', sans-serif; /* Fonte consistente com o tema */
-    color: #333; /* Cor do texto */
+    background: linear-gradient(-45deg, #ff6b6b, #ff8787, #6bffb3, #6b87ff);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
+    font-family: 'Lilita One', sans-serif;
+    color: #333;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100vh;
     margin: 0;
-    overflow: hidden; /* Oculta a barra de rolagem para evitar problemas de overflow */
+    overflow: hidden;
 }
 
 @keyframes gradientAnimation {
@@ -29,10 +29,10 @@ body {
 }
 
 .container {
-    background: rgba(255, 255, 255, 0.8); /* Fundo branco semi-transparente */
+    background: rgba(255, 255, 255, 0.8);
     padding: 20px;
-    border-radius: 15px; /* Bordas arredondadas */
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Sombra leve */
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
 
@@ -61,12 +61,17 @@ h1#title {
 
 #gameCanvas {
     display: block;
-    margin: 20px auto; /* Centraliza o canvas e adiciona um espaçamento acima */
-    border: 5px solid #4CAF50; /* Borda verde grossa */
-    border-radius: 15px; /* Bordas arredondadas */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Sombra para dar profundidade */
-    background: linear-gradient(135deg, #f0f4f5, #d9e2ec); /* Fundo gradiente leve */
+    margin: 20px auto;
+    border: 5px solid #4CAF50;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(135deg, #f0f4f5, #d9e2ec);
+    width: 80%; /* Ajusta a largura do canvas */
+    height: calc(80vw * 9 / 16); /* Calcula a altura proporcional (16:9 aspect ratio) */
+    max-width: 800px; /* Largura máxima do canvas */
+    max-height: 450px; /* Altura máxima do canvas */
 }
+
 
 #restartButton {
     display: block;
@@ -94,6 +99,33 @@ h1#title {
 #restartButton:active {
     transform: scale(0.98); /* Reduz ligeiramente ao clicar, simulando um efeito de pressão */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Reduz a sombra ao clicar */
+}
+
+#fullscreenButton {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-family: 'Lilita One', sans-serif;
+    background: linear-gradient(45deg, #7cff6b, #91ff87);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease, transform 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+#fullscreenButton:hover {
+    background: linear-gradient(45deg, #87ff87, #89ff6b);
+    transform: scale(1.05);
+}
+
+#fullscreenButton:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 #name {

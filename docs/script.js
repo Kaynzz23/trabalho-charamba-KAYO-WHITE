@@ -2,21 +2,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const scoreElement = document.getElementById('score');
-    const restartButton = document.getElementById('restartButton');
+    const fullscreenButton = document.getElementById('fullscreenButton');
+
+    const aspectRatio = 16 / 9; // Razão de aspecto desejada
+    let canvasWidth, canvasHeight;
 
     const gridSize = 20; // Tamanho da grade
-    const canvasSize = 420;
     const skullEmoji = '💀'; // Emoji de caveira
     const boneEmoji = '🦴'; // Emoji de osso
 
     let snake, dx, dy, changingDirection, gameOver, score, fruits;
     let gameInterval; // Variável para armazenar o intervalo do jogo
 
-    // Ajuste do tamanho do canvas
-    canvas.width = canvasSize;
-    canvas.height = canvasSize;
-
-    // Função para inicializar o jogo
     function initializeGame() {
         snake = [
             { x: 200, y: 200 },
@@ -57,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getRandomPosition() {
-        return Math.floor(Math.random() * (canvasSize / gridSize)) * gridSize;
+        return Math.floor(Math.random() * (canvas.width / gridSize)) * gridSize;
     }
 
     function createFruit(type) {
@@ -208,8 +205,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.addEventListener('keydown', changeDirection);
-    restartButton.addEventListener('click', restartGame);
+    fullscreenButton.addEventListener('click', toggleFullScreen);
 
-    initializeGame(); // Inicializa o jogo na primeira execução
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            canvas.requestFullscreen().catch(err => {
+                alert(`Erro ao tentar entrar em tela cheia: ${err.message}`);
+            });
+        } else {
+            document.exitFullscreen();
+        }
+    }
+
+    // Inicializa o jogo na primeira execução
+    initializeGame();
     gameLoop(); // Inicia o loop do jogo
 });
